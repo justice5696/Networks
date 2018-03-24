@@ -1,0 +1,147 @@
+==99080== Memcheck, a memory error detector
+==99080== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==99080== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==99080== Command: ./Project1Server -s cookie -p 30950
+==99080== Parent PID: 40580
+==99080== 
+--99080-- 
+--99080-- Valgrind options:
+--99080--    --leak-check=full
+--99080--    --show-leak-kinds=all
+--99080--    --track-origins=yes
+--99080--    --verbose
+--99080--    --log-file=valgrind-out.txt
+--99080-- Output from sysctl({CTL_KERN,KERN_VERSION}):
+--99080--   Darwin Kernel Version 14.5.0: Wed Jul 29 02:26:53 PDT 2015; root:xnu-2782.40.9~1/RELEASE_X86_64
+--99080-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--99080-- Page sizes: currently 4096, max supported 4096
+--99080-- Valgrind library directory: /usr/local/Cellar/valgrind/3.13.0/lib/valgrind
+--99080-- ./Project1Server (rx at 0x100000000, rw at 0x100002000)
+--99080--    reading syms   from primary file (18 1)
+--99080-- run: /usr/bin/dsymutil "./Project1Server"
+--99080--    dsyms= ./Project1Server.dSYM/Contents/Resources/DWARF/Project1Server
+--99080-- /usr/lib/dyld (rx at 0x7fff5fc00000, rw at 0x7fff5fc37000)
+--99080--    reading syms   from primary file (6 1221)
+--99080-- Scheduler: using generic scheduler lock implementation.
+--99080-- Reading suppressions file: /usr/local/Cellar/valgrind/3.13.0/lib/valgrind/default.supp
+==99080== embedded gdbserver: reading from /var/folders/nj/gcq86wvx0zq2hc5j7_whx8y40000gn/T//vgdb-pipe-from-vgdb-to-99080-by-alexandervalentino-on-???
+==99080== embedded gdbserver: writing to   /var/folders/nj/gcq86wvx0zq2hc5j7_whx8y40000gn/T//vgdb-pipe-to-vgdb-from-99080-by-alexandervalentino-on-???
+==99080== embedded gdbserver: shared mem   /var/folders/nj/gcq86wvx0zq2hc5j7_whx8y40000gn/T//vgdb-pipe-shared-mem-vgdb-99080-by-alexandervalentino-on-???
+==99080== 
+==99080== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==99080== don't want to do, unless you know exactly what you're doing,
+==99080== or are doing some strange experiment):
+==99080==   /usr/local/Cellar/valgrind/3.13.0/lib/valgrind/../../bin/vgdb --pid=99080 ...command...
+==99080== 
+==99080== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==99080==   /path/to/gdb ./Project1Server
+==99080== and then give GDB the following command
+==99080==   target remote | /usr/local/Cellar/valgrind/3.13.0/lib/valgrind/../../bin/vgdb --pid=99080
+==99080== --pid is optional if only one valgrind process is running
+==99080== 
+--99080-- REDIR: 0x7fff5fc1e459 (dyld:arc4random) redirected to 0x25805da76 (???)
+--99080-- REDIR: 0x7fff5fc245e0 (dyld:strcmp) redirected to 0x25805d9d8 (???)
+--99080-- REDIR: 0x7fff5fc1e220 (dyld:strlen) redirected to 0x25805d9a7 (???)
+--99080-- REDIR: 0x7fff5fc1e180 (dyld:strcpy) redirected to 0x25805d9f4 (???)
+--99080-- REDIR: 0x7fff5fc21b2e (dyld:strcat) redirected to 0x25805d9b8 (???)
+--99080-- REDIR: 0x7fff5fc21b6e (dyld:strlcat) redirected to 0x25805da11 (???)
+--99080-- /usr/local/Cellar/valgrind/3.13.0/lib/valgrind/vgpreload_core-amd64-darwin.so (rx at 0x100004000, rw at 0x100006000)
+--99080--    reading syms   from primary file (3 19)
+--99080--    dSYM= /usr/local/Cellar/valgrind/3.13.0/lib/valgrind/vgpreload_core-amd64-darwin.so.dSYM/Contents/Resources/DWARF/vgpreload_core-amd64-darwin.so
+--99080-- /usr/local/Cellar/valgrind/3.13.0/lib/valgrind/vgpreload_memcheck-amd64-darwin.so (rx at 0x100008000, rw at 0x10000d000)
+--99080--    reading syms   from primary file (72 27)
+--99080--    dSYM= /usr/local/Cellar/valgrind/3.13.0/lib/valgrind/vgpreload_memcheck-amd64-darwin.so.dSYM/Contents/Resources/DWARF/vgpreload_memcheck-amd64-darwin.so
+--99080-- /usr/lib/libSystem.B.dylib (rx at 0x100011000, rw at 0x100013000)
+--99080--    reading syms   from primary file (31 5)
+--99080-- /usr/lib/system/libcache.dylib (rx at 0x100018000, rw at 0x10001d000)
+--99080--    reading syms   from primary file (30 29)
+--99080-- /usr/lib/system/libcommonCrypto.dylib (rx at 0x100021000, rw at 0x10002d000)
+--99080--    reading syms   from primary file (214 187)
+--99080-- /usr/lib/system/libcompiler_rt.dylib (rx at 0x10003a000, rw at 0x100042000)
+--99080--    reading syms   from primary file (454 8)
+--99080-- /usr/lib/system/libcopyfile.dylib (rx at 0x10004d000, rw at 0x100056000)
+--99080--    reading syms   from primary file (13 35)
+--99080-- /usr/lib/system/libcorecrypto.dylib (rx at 0x10005c000, rw at 0x1000d6000)
+--99080--    reading syms   from primary file (421 574)
+--99080-- /usr/lib/system/libdispatch.dylib (rx at 0x1000ed000, rw at 0x100118000)
+--99080--    reading syms   from primary file (208 825)
+--99080-- /usr/lib/system/libdyld.dylib (rx at 0x10013c000, rw at 0x100140000)
+--99080--    reading syms   from primary file (78 106)
+--99080-- /usr/lib/system/libkeymgr.dylib (rx at 0x100146000, rw at 0x100147000)
+--99080--    reading syms   from primary file (12 3)
+--99080-- /usr/lib/system/libmacho.dylib (rx at 0x100151000, rw at 0x100157000)
+--99080--    reading syms   from primary file (97 1)
+--99080-- /usr/lib/system/libquarantine.dylib (rx at 0x10015c000, rw at 0x10015f000)
+--99080--    reading syms   from primary file (66 6)
+--99080-- /usr/lib/system/libremovefile.dylib (rx at 0x100163000, rw at 0x100165000)
+--99080--    reading syms   from primary file (15 4)
+--99080-- /usr/lib/system/libsystem_asl.dylib (rx at 0x10016a000, rw at 0x100181000)
+--99080--    reading syms   from primary file (212 214)
+--99080-- /usr/lib/system/libsystem_blocks.dylib (rx at 0x10018d000, rw at 0x10018f000)
+--99080--    reading syms   from primary file (25 23)
+--99080-- /usr/lib/system/libsystem_c.dylib (rx at 0x100193000, rw at 0x100220000)
+--99080--    reading syms   from primary file (1305 736)
+--99080-- /usr/lib/system/libsystem_configuration.dylib (rx at 0x10024a000, rw at 0x10024d000)
+--99080--    reading syms   from primary file (27 58)
+--99080-- /usr/lib/system/libsystem_coreservices.dylib (rx at 0x100252000, rw at 0x100255000)
+--99080--    reading syms   from primary file (10 25)
+--99080-- /usr/lib/system/libsystem_coretls.dylib (rx at 0x100259000, rw at 0x10026b000)
+--99080--    reading syms   from primary file (97 1456)
+--99080-- /usr/lib/system/libsystem_dnssd.dylib (rx at 0x10027a000, rw at 0x100283000)
+--99080--    reading syms   from primary file (68 32)
+--99080-- /usr/lib/system/libsystem_info.dylib (rx at 0x100288000, rw at 0x1002b1000)
+--99080--    reading syms   from primary file (526 524)
+--99080-- /usr/lib/system/libsystem_kernel.dylib (rx at 0x1002c6000, rw at 0x1002e4000)
+--99080--    reading syms   from primary file (1024 83)
+--99080-- /usr/lib/system/libsystem_m.dylib (rx at 0x1002f9000, rw at 0x10032a000)
+--99080--    reading syms   from primary file (593 1)
+--99080-- /usr/lib/system/libsystem_malloc.dylib (rx at 0x100335000, rw at 0x100352000)
+--99080--    reading syms   from primary file (102 201)
+--99080-- /usr/lib/system/libsystem_network.dylib (rx at 0x10035b000, rw at 0x100394000)
+--99080--    reading syms   from primary file (232 1639)
+--99080-- /usr/lib/system/libsystem_networkextension.dylib (rx at 0x1003bb000, rw at 0x1003c2000)
+--99080--    reading syms   from primary file (44 211)
+--99080-- /usr/lib/system/libsystem_notify.dylib (rx at 0x1003cb000, rw at 0x1003d5000)
+--99080--    reading syms   from primary file (138 49)
+--99080-- /usr/lib/system/libsystem_platform.dylib (rx at 0x1003dd000, rw at 0x1003e6000)
+--99080--    reading syms   from primary file (142 158)
+--99080-- /usr/lib/system/libsystem_pthread.dylib (rx at 0x1003ee000, rw at 0x1003f8000)
+--99080--    reading syms   from primary file (158 62)
+--99080-- /usr/lib/system/libsystem_sandbox.dylib (rx at 0x100403000, rw at 0x100406000)
+--99080--    reading syms   from primary file (72 11)
+--99080-- /usr/lib/system/libsystem_secinit.dylib (rx at 0x10040b000, rw at 0x10040d000)
+--99080--    reading syms   from primary file (3 6)
+--99080-- /usr/lib/system/libsystem_stats.dylib (rx at 0x100412000, rw at 0x100418000)
+--99080--    reading syms   from primary file (30 48)
+--99080-- /usr/lib/system/libsystem_trace.dylib (rx at 0x10041e000, rw at 0x100425000)
+--99080--    reading syms   from primary file (47 171)
+--99080-- /usr/lib/system/libunwind.dylib (rx at 0x100432000, rw at 0x100438000)
+--99080--    reading syms   from primary file (102 52)
+--99080-- /usr/lib/system/libxpc.dylib (rx at 0x10043e000, rw at 0x100467000)
+--99080--    reading syms   from primary file (487 816)
+--99080-- /usr/lib/libobjc.A.dylib (rx at 0x100483000, rw at 0x10067e000)
+--99080--    reading syms   from primary file (345 814)
+--99080-- /usr/lib/libauto.dylib (rx at 0x1006a5000, rw at 0x1006ec000)
+--99080--    reading syms   from primary file (68 659)
+--99080-- /usr/lib/libc++abi.dylib (rx at 0x100700000, rw at 0x10072c000)
+--99080--    reading syms   from primary file (331 180)
+--99080-- /usr/lib/libc++.1.dylib (rx at 0x100739000, rw at 0x10078e000)
+--99080--    reading syms   from primary file (1988 1558)
+--99080-- /usr/lib/libDiagnosticMessagesClient.dylib (rx at 0x1007e9000, rw at 0x1007eb000)
+--99080--    reading syms   from primary file (21 14)
+--99080-- REDIR: 0x1003ddc00 (libsystem_platform.dylib:_platform_memchr$VARIANT$Haswell) redirected to 0x10000ab37 (_platform_memchr$VARIANT$Haswell)
+--99080-- REDIR: 0x1003ddce0 (libsystem_platform.dylib:_platform_memcmp) redirected to 0x10000b073 (_platform_memcmp)
+--99080-- REDIR: 0x1003de000 (libsystem_platform.dylib:_platform_strncmp) redirected to 0x10000a9e9 (_platform_strncmp)
+--99080-- REDIR: 0x10033615d (libsystem_malloc.dylib:malloc) redirected to 0x100008df0 (malloc)
+--99080-- REDIR: 0x100339000 (libsystem_malloc.dylib:malloc_default_zone) redirected to 0x10000a25a (malloc_default_zone)
+--99080-- REDIR: 0x100337620 (libsystem_malloc.dylib:malloc_zone_malloc) redirected to 0x1000090a4 (malloc_zone_malloc)
+--99080-- REDIR: 0x10033901f (libsystem_malloc.dylib:free) redirected to 0x100009230 (free)
+--99080-- REDIR: 0x10033ab42 (libsystem_malloc.dylib:malloc_zone_calloc) redirected to 0x1000096aa (malloc_zone_calloc)
+--99080-- REDIR: 0x10033ac01 (libsystem_malloc.dylib:malloc_zone_from_ptr) redirected to 0x10000a29b (malloc_zone_from_ptr)
+--99080-- REDIR: 0x1003dfb00 (libsystem_platform.dylib:_platform_strcmp) redirected to 0x10000aa89 (_platform_strcmp)
+--99080-- REDIR: 0x100193fa0 (libsystem_c.dylib:strlen) redirected to 0x10000a678 (strlen)
+--99080-- REDIR: 0x10033b515 (libsystem_malloc.dylib:calloc) redirected to 0x1000094a8 (calloc)
+--99080-- REDIR: 0x1003de1e0 (libsystem_platform.dylib:_platform_strchr$VARIANT$Haswell) redirected to 0x10000a53e (_platform_strchr$VARIANT$Haswell)
+--99080-- REDIR: 0x10033b581 (libsystem_malloc.dylib:malloc_zone_realloc) redirected to 0x100009a3a (malloc_zone_realloc)
+--99080-- REDIR: 0x10033c064 (libsystem_malloc.dylib:malloc_zone_memalign) redirected to 0x100009df2 (malloc_zone_memalign)
+--99080-- REDIR: 0x10033e02e (libsystem_malloc.dylib:malloc_zone_free) redirected to 0x100009356 (malloc_zone_free)

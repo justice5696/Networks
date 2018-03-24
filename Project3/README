@@ -1,0 +1,37 @@
+README: This set of programs can send udp packets between a client and server.
+
+AUTHOR: Alec Justice
+
+FILES: WhoHeader.h, NetworkHeader.h, Project3Client.cpremoves p, Project3Server.cpp, Database.cpp, database.dat
+
+USAGE:
+  Create Server: make -f Server [clean | tar]  ----for server
+	Create Client: make -f Server [clean | tar]  ----for client
+		-clean removes all .o's and executables
+		-tar encapsulates the program folder in a tar file.
+	Run Server: Project3Server -p <port> -d <databaseFileName>
+	Run Client: Project3Client [-h <serverIP>] [-p <port>] -t <timeout> -i <max-retries> -d <hostname>
+
+
+Examples:
+
+./Project3ServerSzajda -p 30950 -d database.dat
+./Project3Server -p 30950 -d database.dat
+./Project3Client -h mathcs03 -p 30950 -t 7 -i 12 -d mathcs04
+./Project3ClientSzajda -h 141.166.207.149 -p 30950 -t 7 -i 12 -d mathcs04
+
+./Project3Client -t 4 -i 8 -d mathcs04
+
+valgrind --leak-check=full \
+         --show-leak-kinds=all \
+         --track-origins=yes \
+         --verbose \
+         --log-file=valgrind-out.txt \
+         ./Project3Server -p 30950 -d database.dat
+
+valgrind --leak-check=full \
+        --show-leak-kinds=all \
+        --track-origins=yes \
+        --verbose \
+        --log-file=valgrind-out.txt \
+        ./Project3Client -h mathcs02 -p 30950 -t 7 -i 12 -d mathcs04
