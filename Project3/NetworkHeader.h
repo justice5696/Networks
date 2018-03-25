@@ -25,7 +25,7 @@
 #define	LISTENQ		1024	/* 2nd argument to listen() */
 #define SHORT_BUFFSIZE  256     /* For messages I know are short */
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
-#define DEBUG 0
+#define DEBUG 1
 
 void printMessage();
 void constructMessage();
@@ -56,7 +56,8 @@ unsigned long ResolveName(char name[])
 
   if((host = gethostbyname(name)) == NULL)
   {
-    DieWithError("gethostbyname failed\n");
+    printf("gethostbyname failed\n");
+    fflush(stdout);
   }
 
   //return the binary, network-byte-ordered address

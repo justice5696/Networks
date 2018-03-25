@@ -147,13 +147,17 @@ void receiveMessage()
       unsigned short helpme = checksum((void *)messageIn, fromMsgSize);
       if( helpme != 0)
       {
+        if(DEBUG)
+        {
          printf("Checksum after recv: %d\n", checksum((void *)messageIn, fromMsgSize));
-         DieWithError("Checksum of received packets is not 0\n");
+        }
       }
-
-      databaseSearch();
-      constructMessage(); //correctly construct the struct based on cmd line  args
-      sendMessage();
+      else
+      {
+        databaseSearch();
+        constructMessage(); //correctly construct the struct based on cmd line  args
+        sendMessage();
+      }
     }
     return;
 }
@@ -170,11 +174,12 @@ void databaseSearch()
   int stupid = 12; //arbitrary
   numEntries = &stupid;
   char ** tempData = lookup_user_names((char *)messageIn->data, numEntries);
-  messageOut.X = (tempData==NULL) ? 0 : 1;
-  printf("NumEntries: %d\n", *numEntries);
-  messageOut.mgLength = *((unsigned char *)numEntries); //might fuck thngs up
-  listToSingleArray(tempData, *numEntries, *(&messageOut.data));
   numberOfEntries = *numEntries;
+  messageOut.X = (tempData==NULL) ? 0 : 1;
+  debug((char *)&numberOfEntries);
+  debug("NumEntries\n");
+  messageOut.mgLength = *((unsigned char *)&numberOfEntries); //might fuck thngs up
+  listToSingleArray(tempData, numberOfEntries, *(&messageOut.data));
   debug("looked up hostname\n");
   // messageOut.X = 1; need to fix these
   //messageOut.mLength = 1;  need to fix these

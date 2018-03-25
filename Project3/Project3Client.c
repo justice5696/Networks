@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     debug("Construct message finished\n");
 
     sendMessage(); //send the struct
-    printMessage();//print the contents of the struct in a formatted way
+    printMessage(messageIn, fromMsgSize);//print the contents of the struct in a formatted way
     debug("made it past recive\n");
     close(sock);
 
@@ -151,13 +151,7 @@ void receiveMessage()
     }
     debug("received from server\n");
 
-    printf("Version Field: %d(6)\n", messageIn->version);
-    printf("Type Field: %d(0)\n", messageIn->type);
-    printf("Version Field: %d(0)\n", messageIn->X);
-    printf("Length Field: %d(1)\n", messageIn->mgLength);
-    printf("qID Field: %d(normal), %d(ntohs), %d(htons)\n", messageIn->qID, ntohs(messageIn->qID), htons(messageIn->qID));
-    printf("Checksum: %d(normal), %d(ntohs), %d(htons)\n", messageIn->checkSum, ntohs(messageIn->checkSum), htons(messageIn->checkSum));
-    printf("MessageIn.data: %s\n", messageIn->data);
+
 
 
     printf("Handling Client %s\n", inet_ntoa(fromAddr.sin_addr));
@@ -186,7 +180,45 @@ void receiveMessage()
     return;
 }
 
-void printMessage()
+
+void printMessage(Message *m, int mSize)
 {
+
+  printf("      Packet:%d\n", m->qID);
+  printf("Size     Field: %d\n", mSize);
+  printf("Version  Field: %d\n", m->version);
+  printf("Type     Field: %d\n", m->type);
+  printf("Version  Field: %d\n", m->X);
+  printf("Length   Field: %d\n", m->mgLength);
+  printf("qID      Field: %d\n", m->qID);
+  printf("Checksum Field: %d\n", m->checkSum);
+  printf("Data: \n");
+
+
+  if(m->X == 0)
+  {
+    printf("Data Portion Empty");
     return;
+  }
+  else
+  {
+    printf("%-8s %-5s %-4s","Username", "", "Time\n");
+    //print two columns of user data
+    int i;
+    int j;
+    for(i = 0; i < ((unsigned short)m->mgLength); i++)
+    {
+      for(j = 0; j < 8; j++)
+      {
+        printf("%c", m->data[j + (i * 12)]);
+      }
+      printf("%-5s ","");
+      char temp[4];
+
+      temp = m.data[8 + (i*12)];
+      printf("%s \n", temp);
+    };
+  }
+  return;
+
 }
