@@ -10,11 +10,11 @@
 #include <time.h>
 #include "WhoHeader.h"
 
-/*#define SERVER_HOST "141.166.207.143"  Mathcs02 ipv4 address */
-/*#define SERVER_HOST "141.166.207.146"   Mathcs05*/
-//#define SERVER_HOST "141.166.207.144"    /*Mathcs01*/
+//#define SERVER_HOST "141.166.207.143"  //Mathcs02
+//#define SERVER_HOST "141.166.207.146"   //Mathcs05
+//#define SERVER_HOST "141.166.207.144"    //Mathcs01
 #define SERVER_HOST "127.0.0.1"
-#define SERVER_PORT "30950"			/*The port number ill be using*/
+#define SERVER_PORT "30950"
 
 #define SA struct sockaddr_in
 
@@ -25,14 +25,11 @@
 #define	LISTENQ		1024	/* 2nd argument to listen() */
 #define SHORT_BUFFSIZE  256     /* For messages I know are short */
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
-#define DEBUG 1
+#define DEBUG 0
 
-void printMessage();
 void constructMessage();
 void sendMessage();
 void receiveMessage();
-
-
 
 typedef struct
 {
@@ -45,23 +42,15 @@ typedef struct
 	char data[BUFFSIZE];
 } Message;
 
-typedef union{
-  char myByte[4];
-  long myLong;
-} Data;
 
 unsigned long ResolveName(char name[])
 {
   struct hostent *host;
-
   if((host = gethostbyname(name)) == NULL)
   {
     printf("gethostbyname failed\n");
     fflush(stdout);
   }
-
-  //return the binary, network-byte-ordered address
-
   return *((unsigned long *) host->h_addr_list[0]);
 }
 
@@ -73,18 +62,14 @@ void DieWithError(char *errorMessage)
 }
 
 
-unsigned short checksum(unsigned short *ptr,int nbytes)  //nbytes = total number of bites in the message = sizeof(message)
+//nbytes = total number of bites in the message = sizeof(message)
+//unsigned short *ptr = (unsigned short *) message
+unsigned short checksum(unsigned short *ptr,int nbytes)
 {
-                                                   //unsigned short *ptr = (unsigned short *) message
-    if(DEBUG)
-    {
-        printf("checksum entered: nbytes = %d\n", nbytes);
-    }
-
+    if(DEBUG){printf("checksum entered: nbytes = %d\n", nbytes);}
     unsigned long sum;
     unsigned short oddbyte;
     unsigned short answer;
-
     sum=0;
     while(nbytes>1)
     {
@@ -97,11 +82,9 @@ unsigned short checksum(unsigned short *ptr,int nbytes)  //nbytes = total number
         *((unsigned char*)&oddbyte)=*(unsigned char*)ptr;
         sum+=oddbyte;
     }
-
     sum = (sum>>16)+(sum & 0xffff);
     sum = sum + (sum>>16);
     answer=(unsigned short)~sum;
-
     return(answer);
 }
 
@@ -133,22 +116,45 @@ void listToSingleArray(char** list, int numberOfEntries, char* buff)
       }
     }
     tempTime = atoi(strtok(NULL, ":"));
-
-    //uint32_t  hope = 0;
-    //memcpy((void *)&hope, (void *)&tempTime, 4);
     memcpy((void *)&buff[8 + (i*12)], (void *)&tempTime, 4);
-    /*
-  Data myData;
-  myData.myLong = tempTime;
-    for(j =0; j<4; j++ )
-    {
-      buff[j + 8 + (i*12)] = myData.myByte[j];
-      if(j>=strlen(myData.myByte))
-      {
-        printf("entered j>=strlen(MyData.myByte (=%s))", myData.myByte)
-        buff[j + 8 + (i*12)] = '\0';
-      }
-    }
-    */
   }
+}
+
+void printMessage(Message *m, int mSize)
+{
+  printf("      Packet:%d\n", m->qID);
+  printf("Size     Field: %d\n", mSize);
+  printf("Version  Field: %d\n", m->version);
+  printf("Type     Field: %d\n", m->type);
+  printf("X        Field: %d\n", m->X);
+  printf("Length   Field: %d\n", m->mgLength);
+  printf("qID      Field: %d\n", m->qID);
+  printf("Checksum Field: %d\n", m->checkSum);
+  printf("Data: \n");
+
+  if((m->X == 0) && DEBUG)
+  {
+    printf("Data Portion Empty");
+    return;
+  }
+  else
+  {
+    printf("%-8s %-5s %-4s","Username", "", "Time\n");
+    int i;
+    int j;
+    for(i = 0; i < ((unsigned short)m->mgLength); i++)
+    {
+      for(j = 0; j < 8; j++)
+      {
+        printf("%c", m->data[j + (i * 12)]);
+      }
+
+      uint32_t faith;
+      printf("%-5s ","");
+      memcpy((void *)&faith, (void *)&m->data[8 + (i*12)], 4);
+      printf("%d\n", faith);
+    };
+  }
+  return;
+
 }
