@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS= -c -std=c11 -Wall
+CFLAGS= -c -std=gnu99 -Wall
 LDFLAGS=
 SOURCES=Project3Server.c Database.c
 OBJECTS=$(SOURCES:.c=.o)

@@ -76,7 +76,7 @@ void constructMessage()
 {
                                       debug("constructing message\n");
   messageOut.version = 6; //0110
-  messageOut.type = 4; //000
+  messageOut.type = 0; //4
   messageOut.qID = messageIn->qID;
   messageOut.checkSum = 0;
   sizel = numberOfEntries*12;

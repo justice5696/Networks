@@ -9,6 +9,8 @@
 #include <netinet/in.h>
 #include <time.h>
 #include "WhoHeader.h"
+#include <errno.h>
+#include <signal.h>
 
 //#define SERVER_HOST "141.166.207.143"  //Mathcs02
 //#define SERVER_HOST "141.166.207.146"   //Mathcs05
@@ -25,7 +27,7 @@
 #define	LISTENQ		1024	/* 2nd argument to listen() */
 #define SHORT_BUFFSIZE  256     /* For messages I know are short */
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
-#define DEBUG 0
+#define DEBUG 1
 
 void constructMessage();
 void sendMessage();
