@@ -134,19 +134,21 @@ void listToSingleArray(char** list, int numberOfEntries, char* buff)
     }
     tempTime = atoi(strtok(NULL, ":"));
 
-
+    //uint32_t  hope = 0;
+    //memcpy((void *)&hope, (void *)&tempTime, 4);
+    memcpy((void *)&buff[8 + (i*12)], (void *)&tempTime, 4);
+    /*
   Data myData;
   myData.myLong = tempTime;
-
     for(j =0; j<4; j++ )
     {
       buff[j + 8 + (i*12)] = myData.myByte[j];
       if(j>=strlen(myData.myByte))
       {
+        printf("entered j>=strlen(MyData.myByte (=%s))", myData.myByte)
         buff[j + 8 + (i*12)] = '\0';
       }
     }
-
+    */
   }
-
 }

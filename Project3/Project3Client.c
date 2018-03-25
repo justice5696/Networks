@@ -188,7 +188,7 @@ void printMessage(Message *m, int mSize)
   printf("Size     Field: %d\n", mSize);
   printf("Version  Field: %d\n", m->version);
   printf("Type     Field: %d\n", m->type);
-  printf("Version  Field: %d\n", m->X);
+  printf("X        Field: %d\n", m->X);
   printf("Length   Field: %d\n", m->mgLength);
   printf("qID      Field: %d\n", m->qID);
   printf("Checksum Field: %d\n", m->checkSum);
@@ -212,11 +212,14 @@ void printMessage(Message *m, int mSize)
       {
         printf("%c", m->data[j + (i * 12)]);
       }
-      printf("%-5s ","");
-      char temp[4];
 
-      temp = m.data[8 + (i*12)];
-      printf("%s \n", temp);
+      uint32_t faith;
+      printf("%-5s ","");
+      //Data* newData = malloc(sizeof(Data));
+      //memcpy((void *) &newData.)
+
+      memcpy((void *)&faith, (void *)&m->data[8 + (i*12)], 4);
+      printf("%d\n", faith);
     };
   }
   return;
