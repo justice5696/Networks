@@ -19,6 +19,8 @@ int tries = 0;
 void CatchAlarm(int ignored);
 struct sigaction myAction;
 int h;
+int caught;
+int working;
 
 
 
@@ -33,6 +35,8 @@ int main(int argc, char *argv[])
     messageIn = malloc(sizeof(*messageIn));
     fromSize = sizeof(fromAddr);
     h = 1;
+    working = 0;
+    caught = 0;
 
     if ((argc < 7) || (argc > 11))
     {
@@ -136,22 +140,19 @@ void sendMessage()
 
 void receiveMessage()
 {
-  debug("Inside receive method\n");
-  h=1;
-  if(h)
+alarm(timeout);
+  for(;;)
   {
-    debug("Entered alarm(timeout) conditional\n");
-    alarm(timeout);
-  }
-  while((fromMsgSize = recvfrom(sock, messageIn, sizeof(*messageIn), 0, ((struct sockaddr *)&fromAddr), &fromSize)) < 0)
-  {
-    if(errno == EINTR)
+    working = 0;
+    if(caught)
     {
+      caught = 0;
+      tries++;
+      debug("Entered alarm(timeout) conditional\n");
       if(tries < maxTries)
       {
-        printf("Timed out: %d tries remaining", maxTries-tries);
+        printf("Timed out: %d tries remaining out of %d\n\n", maxTries-tries, maxTries);
         sendMessage();
-                                                debug("message sent\n");
         alarm(timeout);
       }
       else
@@ -159,40 +160,68 @@ void receiveMessage()
         alarm(0);
         DieWithError((char*)"Error: No response");
       }
-    }
-    else
-    {
-      DieWithError((char*)"Error: recvfrom() failed");
-    }
-  }
-  debug("received from server\n");
-  printf("Handling Client %s\n", inet_ntoa(fromAddr.sin_addr));
-  unsigned short helpme = checksum((void *)messageIn, fromMsgSize);
-  if(DEBUG)
-  { if(messageIn->version != messageOut.version){debug("Error: received packet version doesn't match outgoing packet version\n");}
-  if(messageIn->type != 4){debug("Error: received packet type doesn't match outgoing packet type \n");}
-  if(helpme != 0){debug("Error: Checskum of received packet is not equal to 0.\n");}
-  if(messageIn->qID != messageOut.qID){debug("Error: received packet ID doesn't match outgoing packet ID \n");}
-  if(serverAddress.sin_addr.s_addr != fromAddr.sin_addr.s_addr){debug("Error: Received a packet from an unknown source.\n" );}}
 
-  if((messageIn->version != messageOut.version)||(messageIn->type != 4)||(helpme != 0)||(messageIn->qID != messageOut.qID)||(serverAddress.sin_addr.s_addr != fromAddr.sin_addr.s_addr))
-  {
-    debug("entered incorrect message conditional, preparing to memset messageIn\n");
-    h = 0;
-    //memset(messageIn,0,sizeof(*messageIn));
-    //sendMessage();
-    receiveMessage();
-  }
-  else
-  {
+    debug("Inside receive method\n");
+    }
+    while((fromMsgSize = recvfrom(sock, messageIn, sizeof(*messageIn), 0, ((struct sockaddr *)&fromAddr), &fromSize)) == -1)
+    {
+      debug("WHAT THE FUCK\n");
+      if(errno == EINTR)
+      {
+        if(tries < maxTries)
+        {
+          debug("if errno=EINTR");
+          printf("Timed out: %d tries remaining out of %d\n\n", maxTries-tries, maxTries);
+          sendMessage();
+                                    debug("message sent\n");
+          alarm(timeout);
+          continue;
+        }
+        else
+        {
+          alarm(0);
+          DieWithError((char*)"Error: No response");
+        }
+      }
+      else
+      {
+        DieWithError((char*)"Error: recvfrom() failed\n");
+      }
+    }
+    working = 1;
+    debug("received from server\n");
+    printf("Handling Client %s\n\n", inet_ntoa(fromAddr.sin_addr));
+    unsigned short helpme = checksum((void *)messageIn, fromMsgSize);
+    if(DEBUG)
+    { if(messageIn->version != messageOut.version){debug("Error: received packet version doesn't match outgoing packet version\n");}
+    if(messageIn->type != 4){debug("Error: received packet type doesn't match outgoing packet type \n");}
+    if(helpme != 0){debug("Error: Checskum of received packet is not equal to 0.\n");}
+    if(messageIn->qID != messageOut.qID){debug("Error: received packet ID doesn't match outgoing packet ID \n");}
+    if(serverAddress.sin_addr.s_addr != fromAddr.sin_addr.s_addr){debug("Error: Received a packet from an unknown source.\n" );}}
+
+    if((messageIn->version != messageOut.version)||(messageIn->type != 4)||(helpme != 0)||(messageIn->qID != messageOut.qID)||(serverAddress.sin_addr.s_addr != fromAddr.sin_addr.s_addr))
+    {
+      debug("entered incorrect message conditional, preparing to memset messageIn\n");
+      //caught = 1;
+      continue;
+    }
+
     debug("message received and all things correct, retruning from receiveMessage() now\n");
     alarm(0); //correct message received
     return;
   }
-  return;
+
 }
 
 void CatchAlarm(int ignored)
 {
-  tries += 1;
+  debug("is this ever entered\n");
+  if (!working)
+  {
+    tries++;
+  }
+  else
+  {
+    caught = 1;
+  }
 }

@@ -27,7 +27,7 @@
 #define	LISTENQ		1024	/* 2nd argument to listen() */
 #define SHORT_BUFFSIZE  256     /* For messages I know are short */
 #define bzero(b,len) (memset((b), '\0', (len)), (void) 0)
-#define DEBUG 1
+#define DEBUG 0
 
 void constructMessage();
 void sendMessage();
@@ -95,7 +95,7 @@ void debug(char * temp)
   if(DEBUG)
   {
     printf("%s", temp);
-    fflush(stdout);
+    //fflush(stdout);
   }
 }
 
@@ -124,20 +124,27 @@ void listToSingleArray(char** list, int numberOfEntries, char* buff)
 
 void printMessage(Message *m, int mSize)
 {
-  printf("      Packet:%d\n", m->qID);
-  printf("Size     Field: %d\n", mSize);
-  printf("Version  Field: %d\n", m->version);
-  printf("Type     Field: %d\n", m->type);
-  printf("X        Field: %d\n", m->X);
-  printf("Length   Field: %d\n", m->mgLength);
-  printf("qID      Field: %d\n", m->qID);
-  printf("Checksum Field: %d\n", m->checkSum);
-  printf("Data: \n");
-
-  if((m->X == 0) && DEBUG)
+  if(DEBUG)
   {
-    printf("Data Portion Empty");
-    return;
+    printf("      Packet:%d\n", m->qID);
+    printf("Size     Field: %d\n", mSize);
+    printf("Version  Field: %d\n", m->version);
+    printf("Type     Field: %d\n", m->type);
+    printf("X        Field: %d\n", m->X);
+    printf("Length   Field: %d\n", m->mgLength);
+    printf("qID      Field: %d\n", m->qID);
+    printf("Checksum Field: %d\n", m->checkSum);
+    printf("Data: \n");
+  }
+
+  if(m->X == 0)
+  {
+    debug("Data Portion Empty");
+    printf("Inputted hostname not found in Database.\n");
+  }
+  else if(m->mgLength == 0)
+  {
+    printf("No users logged in to inputted hostname.\n");
   }
   else
   {

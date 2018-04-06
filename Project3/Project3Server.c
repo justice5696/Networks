@@ -76,7 +76,7 @@ void constructMessage()
 {
                                       debug("constructing message\n");
   messageOut.version = 6; //0110
-  messageOut.type = 0; //4
+  messageOut.type = 4; //4
   messageOut.qID = messageIn->qID;
   messageOut.checkSum = 0;
   sizel = numberOfEntries*12;
@@ -106,7 +106,7 @@ void receiveMessage()
          DieWithError((char *) "recvfrom() failed\n");
       }
                                        if(DEBUG){printMessage(messageIn, fromMsgSize);}
-      printf("Handling Client %s\n", inet_ntoa(fromAddr.sin_addr));
+      printf("Handling Client %s\n\n", inet_ntoa(fromAddr.sin_addr));
       unsigned short helpme = checksum((void *)messageIn, fromMsgSize);
       if( helpme != 0)
       {
